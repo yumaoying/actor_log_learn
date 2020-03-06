@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!--控制台日志-->
+    <appender name="STDOUT"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>[%level][%date] %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+    <appender name="FILE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- timebasedrollingpolicy：演示时间和大小为基础的日志文件归档 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- 归档的日志文件的路径，例如今天是2019-08-21日志，当前写的日志文件路径为file节点指定。 -->
+            <!--而2019-08-21的日志文件在由fileNamePattern指定。%d{yyyy-MM-dd}指定日期格式，%i指定索引 -->
+            <!-- 文件滚动日期格式：每天：.YYYY-MM-dd（默认）；每星期：.YYYY-ww；每月：.YYYY-MM -->
+            <!-- 每隔半天：.YYYY-MM-dd-a；每小时：.YYYY-MM-dd-HH；每分钟：.YYYY-MM-dd-HH-mm -->
+            <fileNamePattern>logs\akka.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 控制归档文件的最大数量的保存，删除旧的文件，默认单位天数 -->
+            <maxHistory>7</maxHistory>
+            <!-- 设置当前日志的文件的大小，决定日志翻滚 -->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- 除按日志记录之外，还配置了日志文件不能超过50M(默认)，若超过50M，日志文件会以索引0开始， -->
+                <maxFileSize>50MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <!-- encoder编码规则 -->
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+
+    </appender>
+
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </root>
+</configuration>
